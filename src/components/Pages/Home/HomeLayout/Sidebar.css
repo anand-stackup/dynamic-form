@@ -1,0 +1,13 @@
+.sidebar {
+    /* border: 1px solid red; */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 20%;
+}
+
+.sidebar-items {
+    text-align: center;
+    padding: 10px;
+    border: 1px solid grey;
+}
