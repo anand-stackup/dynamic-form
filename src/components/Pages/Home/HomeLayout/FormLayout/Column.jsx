@@ -1,13 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDrop } from "react-dnd";
 
-const Column = ({ col, colIndex, rowIndex, deleteColumn, formik }) => {
-    const [type, setType] = useState("");
-
+const Column = ({ col, colIndex, rowIndex, deleteColumn, formik, openModal }) => {
     const [{ isOver }, drop] = useDrop(() => ({
         accept: "string",
         drop: (item) => {
-            setType(item.type);
+            addDropValue(item.type, rowIndex, colIndex);
         },
         collect: (monitor) => ({
             isOver: monitor.isOver(),
@@ -16,15 +14,32 @@ const Column = ({ col, colIndex, rowIndex, deleteColumn, formik }) => {
 
     function addDropValue(type, rowIndex, colIndex) {
         console.log(rowIndex, colIndex);
-        formik.setFieldValue(
-            `rows[${rowIndex}].cols[${colIndex}].value`,
-            type
-        );
+        formik.setFieldValue(`rows[${rowIndex}].cols[${colIndex}].value`, type);
+
+        // formik.setFieldValue(prevValues => {
+        //     const updatedRows = prevValues.rows.map((row, index) => {
+        //         if (index === rowIndex) {
+        //             const updatedCols = row.cols.map((col, colIndex) => {
+        //                 if (colIndex === initialColIndex) {
+        //                     return { ...col, value: type };
+        //                 }
+        //                 return col;
+        //             });
+    
+        //             return { ...row, cols: updatedCols };
+        //         }
+        //         return row;
+        //     });
+    
+        //     return { ...prevValues, rows: updatedRows };
+        // });
+        
     }
+
 
     return (
         <>
-            <div className="col">
+            <div className="col" ref={drop}>
                 <button
                     type="button"
                     className="btn delete-col"
@@ -32,18 +47,10 @@ const Column = ({ col, colIndex, rowIndex, deleteColumn, formik }) => {
                 >
                     <i className="fa-solid fa-circle-xmark"></i>
                 </button>
-                {type && addDropValue(type, rowIndex, colIndex)}
-                <input
-                    type="text"
-                    value={col.value}
-                    onChange={(e) => {
-                        formik.setFieldValue(
-                            `rows[${rowIndex}].cols[${colIndex}].value`,
-                            e.target.value
-                        );
-                    }}
-                    ref={drop}
-                />
+                <label htmlFor="">{col.label}</label>
+                {col.value === 'textarea' ? <textarea name="" id="" cols="30" rows="5" placeholder={col.placeholder}></textarea> :
+                <input type={col.value} placeholder={col.placeholder}  />}
+                <button type="button" className="btn attribute" onClick={() => {openModal(rowIndex, colIndex)}}><i className="fa-solid fa-gear"></i></button>
             </div>
         </>
     );

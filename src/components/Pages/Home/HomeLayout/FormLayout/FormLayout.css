@@ -1,7 +1,11 @@
 .form-layout {
-    border:  1px solid red;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border:  1px solid rgb(0, 132, 255);
     width: 80%;
     padding: 15px;
+    position: relative;
 }
 
 .form {
@@ -11,6 +15,8 @@
 }
 
 .row {
+    display: flex;
+    align-items: center;
     border: 1px dashed gray;
     display: flex;
     gap: 10px;
@@ -18,10 +24,56 @@
 }
 
 .col {
+    display: flex;
+    gap: 10px;
     border: 1px dashed blue;
     padding: 10px;
 }
 
+.btn {
+    height: 25px;
+    padding: 0 5px;
+}
+
 .add-row {
+    width: 100px;
     margin-bottom: 10px;
+}
+
+.delete-col, .attribute {
+    background: transparent;
+    border: none;
+}
+
+.modal {
+    position: absolute;
+    top: 20;
+    left: 0;
+    right: 0;
+}
+
+.modal form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    width: 250px;
+    height: 250px;
+    background-color: #fff;
+    border:  1px solid grey;
+    margin: auto;
+}
+
+.submit {
+    width: 100px;
+}
+
+.modal-btn {
+    display: flex;
+    gap: 10px;
+}
+
+.modal-btn .btn {
+    padding: 0 5px;
 }

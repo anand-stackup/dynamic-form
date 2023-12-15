@@ -5,11 +5,11 @@ import SidebarItems from "./SidebarItems";
 const Sidebar = () => {
 
     const [inputs, setInputs] = useState([
-        { type: "Text" },
-        { type: "Textarea" },
-        { type: "Checkbox" },
-        { type: "Date" },
-        { type: "File" },
+        { type: "text" },
+        { type: "textarea" },
+        { type: "checkbox" },
+        { type: "date" },
+        { type: "file" },
     ]);
 
     return (
