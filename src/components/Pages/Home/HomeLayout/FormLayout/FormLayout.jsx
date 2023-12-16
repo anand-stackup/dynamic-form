@@ -3,6 +3,7 @@ import "./FormLayout.css";
 import { useFormik } from "formik";
 import Column from "./Column";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const FormLayout = () => {
     const navigate = useNavigate();
@@ -10,11 +11,14 @@ const FormLayout = () => {
 
     const formik = useFormik({
         initialValues: {
+            title: "",
+            desc: "",
             rows: [],
         },
         onSubmit: (values) => {
-            console.log(values);
-            // navigate("/form", { state: values });
+            // console.log(values);
+            postFormSettings(values)
+            navigate("/form");
         },
     });
 
@@ -51,10 +55,10 @@ const FormLayout = () => {
         formik.setFieldValue("rows", [
             ...formik.values.rows,
             {
-                id: `row${formik.values.rows.length}`,
+                Index: formik.values.rows.length,
                 cols: [
                     {
-                        id: `row${formik.values.rows.length}-col0`,
+                        Index: `${formik.values.rows.length}0`,
                         value: "",
                         label: "",
                         placeholder: "",
@@ -75,7 +79,7 @@ const FormLayout = () => {
                             cols: [
                                 ...row.cols,
                                 {
-                                    id: `row${rowIndex}-col${row.cols.length}`,
+                                    Index: `${rowIndex}${row.cols.length}`,
                                     value: "",
                                     label: "",
                                     placeholder: "",
@@ -95,7 +99,7 @@ const FormLayout = () => {
             formik.values.rows.map((row, index) => {
                 if (index === rowIndex) {
                     const updatedCols = row.cols.filter(
-                        (col) => col.id !== `row${rowIndex}-col${colIndex}`
+                        (col) => col.Index !== `${rowIndex}${colIndex}`
                     );
                     return {
                         ...row,
@@ -114,6 +118,10 @@ const FormLayout = () => {
         modalFormik.setFieldValue("colIndex", colIndex);
     }
 
+    function postFormSettings(data) {
+        axios.post('http://localhost:4000/layout', data)
+    }
+
     return (
         <div className="form-layout">
             <button
@@ -128,14 +136,30 @@ const FormLayout = () => {
                 <button className="btn submit" type="submit">
                     Save
                 </button>
+                <input
+                    type="text"
+                    name="title"
+                    id="title"
+                    placeholder="Enter form title"
+                    value={formik.values.title}
+                    onChange={formik.handleChange}
+                />
+                <input
+                    type="text"
+                    name="desc"
+                    id="desc"
+                    placeholder="Enter form description"
+                    value={formik.values.desc}
+                    onChange={formik.handleChange}
+                />
                 {formik.values.rows &&
                     formik.values.rows.map((row, rowIndex) => (
-                        <div className="row" key={row.id}>
+                        <div className="row" key={row.Index}>
                             {row.cols &&
                                 row.cols.map((col, colIndex) => {
                                     return (
                                         <Column
-                                            key={col.id}
+                                            key={col.Index}
                                             col={col}
                                             colIndex={colIndex}
                                             rowIndex={rowIndex}
@@ -180,7 +204,9 @@ const FormLayout = () => {
                             onChange={modalFormik.handleChange}
                         />
                         <div className="modal-btn">
-                            <button className="btn" type="submit">Add</button>
+                            <button className="btn" type="submit">
+                                Add
+                            </button>
                             <button
                                 className="btn"
                                 type="button"

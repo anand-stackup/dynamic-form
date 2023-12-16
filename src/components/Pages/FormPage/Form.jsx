@@ -1,40 +1,53 @@
 import { useFormik } from "formik";
-import React from "react";
-import { useLocation } from "react-router-dom";
-import * as Yup from "yup";
+import React, { useEffect, useState } from "react";
 import "./Form.css";
 import Header from "../../Common/Header/Header";
+import axios from "axios";
 
 const Form = () => {
-    const { state } = useLocation();
-    // console.log(state);
+    const [data, setData] = useState({})
+
+    async function getFormSettings() {
+        const res = await axios.get('http://localhost:4000/layout')
+        setData(res.data.data[0])
+        console.log(res.data.data[0]);
+    }
+
+    function postFormData(data) {
+        axios.post('http://localhost:4000/data', data)
+    }
+
+    useEffect(() => {
+        getFormSettings()
+    }, [])
+
 
     const formik = useFormik({
         initialValues: {},
-        // validationSchema: Yup.object().shape({
-        //     text: Yup.string()
-        //         .min(2, "Too Short!")
-        //         .max(50, "Too Long!")
-        //         .required("Required"),
-        //     textarea: Yup.string()
-        //         .min(2, "Too Short!")
-        //         .max(50, "Too Long!")
-        //         .required("Required"),
-        // }),
         onSubmit: (values) => {
-            console.log(values);
+            var array = []
+            for (const [key, value] of Object.entries(values)) {
+                const obj = {label: key, value: value}
+                array.push(obj)
+            }
+            console.log({data: array});
+            postFormData({data: array})
         },
     });
     return (
         <>
             <Header />
+            <div className="title">
+                    <h3>{data.title}</h3>
+                    <span>{data.desc}</span>
+                </div>
             <form className="new-form" onSubmit={formik.handleSubmit}>
-                {state.rows &&
-                    state.rows.map((row) => (
-                        <div className="form-row" key={row.id}>
+                {data.rows &&
+                    data.rows.map((row) => (
+                        <div className="form-row" key={row._id}>
                             {row.cols &&
                                 row.cols.map((col) => (
-                                    <div className="form-col" key={col.id}>
+                                    <div className="form-col" key={col._id}>
                                         <label htmlFor={col.value}>
                                             {col.label}
                                         </label>
