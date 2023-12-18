@@ -3,14 +3,17 @@ import React, { useEffect, useState } from "react";
 import "./Form.css";
 import Header from "../../Common/Header/Header";
 import axios from "axios";
+import { useParams } from "react-router-dom";
 
 const Form = () => {
     const [data, setData] = useState({})
+    const { id } = useParams()
+    console.log(id);
 
-    async function getFormSettings() {
-        const res = await axios.get('http://localhost:4000/layout')
-        setData(res.data.data[0])
-        console.log(res.data.data[0]);
+    async function getFormLayout(id) {
+        const form = await axios.get(`http://localhost:4000/layout/?id=${id}`);
+        console.log(form.data.data);
+        setData(form.data.data)
     }
 
     function postFormData(data) {
@@ -18,8 +21,8 @@ const Form = () => {
     }
 
     useEffect(() => {
-        getFormSettings()
-    }, [])
+        getFormLayout(id)
+    }, [id])
 
 
     const formik = useFormik({

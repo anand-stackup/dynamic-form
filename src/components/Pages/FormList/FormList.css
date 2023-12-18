@@ -1,0 +1,30 @@
+.list {
+    display: flex;
+    width: 50%;
+    margin: auto;
+    justify-content: space-around;
+    gap: 30px;
+    padding: 25px 10px;
+    border:  1px solid grey;
+    border-radius: 10px;
+}
+
+.list-container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
+}
+
+.list-container h4 {
+    text-align: center;
+}
+
+.list-container h3 {
+    cursor: pointer;
+}
+
+.list-container button {
+    cursor: pointer;
+}

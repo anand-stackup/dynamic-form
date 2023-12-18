@@ -13,26 +13,8 @@ const Column = ({ col, colIndex, rowIndex, deleteColumn, formik, openModal }) =>
     }));
 
     function addDropValue(type, rowIndex, colIndex) {
-        console.log(rowIndex, colIndex);
+        // console.log(rowIndex, colIndex);
         formik.setFieldValue(`rows[${rowIndex}].cols[${colIndex}].value`, type);
-
-        // formik.setFieldValue(prevValues => {
-        //     const updatedRows = prevValues.rows.map((row, index) => {
-        //         if (index === rowIndex) {
-        //             const updatedCols = row.cols.map((col, colIndex) => {
-        //                 if (colIndex === initialColIndex) {
-        //                     return { ...col, value: type };
-        //                 }
-        //                 return col;
-        //             });
-    
-        //             return { ...row, cols: updatedCols };
-        //         }
-        //         return row;
-        //     });
-    
-        //     return { ...prevValues, rows: updatedRows };
-        // });
         
     }
 
@@ -40,6 +22,9 @@ const Column = ({ col, colIndex, rowIndex, deleteColumn, formik, openModal }) =>
     return (
         <>
             <div className="col" ref={drop}>
+                <label htmlFor="">{col.label}</label>
+                {col.value === 'textarea' ? <textarea name="" id="" cols="30" rows="5" placeholder={col.placeholder} value={col.value}></textarea> :
+                <input type={col.value} placeholder={col.placeholder} value={col.value}  />}
                 <button
                     type="button"
                     className="btn delete-col"
@@ -47,9 +32,6 @@ const Column = ({ col, colIndex, rowIndex, deleteColumn, formik, openModal }) =>
                 >
                     <i className="fa-solid fa-circle-xmark"></i>
                 </button>
-                <label htmlFor="">{col.label}</label>
-                {col.value === 'textarea' ? <textarea name="" id="" cols="30" rows="5" placeholder={col.placeholder}></textarea> :
-                <input type={col.value} placeholder={col.placeholder}  />}
                 <button type="button" className="btn attribute" onClick={() => {openModal(rowIndex, colIndex)}}><i className="fa-solid fa-gear"></i></button>
             </div>
         </>

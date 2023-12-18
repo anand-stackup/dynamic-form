@@ -33,6 +33,7 @@
 .btn {
     height: 25px;
     padding: 0 5px;
+    cursor: pointer;
 }
 
 .add-row {
@@ -76,4 +77,9 @@
 
 .modal-btn .btn {
     padding: 0 5px;
+}
+
+.button {
+    display: flex;
+    justify-content: center;
 }

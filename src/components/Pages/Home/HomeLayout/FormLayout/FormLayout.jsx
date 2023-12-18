@@ -1,26 +1,34 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./FormLayout.css";
 import { useFormik } from "formik";
 import Column from "./Column";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
 const FormLayout = () => {
     const navigate = useNavigate();
     const [modal, setModal] = useState(false);
+    const { id } = useParams();
+    // const [ data, setData ] = useState({});
 
     const formik = useFormik({
-        initialValues: {
-            title: "",
-            desc: "",
-            rows: [],
-        },
+        initialValues: {},
         onSubmit: (values) => {
-            // console.log(values);
-            postFormSettings(values)
-            navigate("/form");
+            console.log(values);
+            editedFormLayout(values, id)
+            // navigate("/form");
         },
     });
+
+    async function getFormLayout(id) {
+        const form = await axios.get(`http://localhost:4000/layout/?id=${id}`);
+        formik.setValues(form.data.data)
+    } 
+    
+    useEffect(() => {
+        getFormLayout(id)
+    }, [id])
+    
 
     const modalFormik = useFormik({
         initialValues: {
@@ -37,7 +45,7 @@ const FormLayout = () => {
         },
     });
 
-    console.log(formik.values);
+    // console.log(formik.values);
 
     function addAttributes(values, rowIndex, colIndex) {
         // console.log(rowIndex, colIndex);
@@ -106,6 +114,7 @@ const FormLayout = () => {
                         cols: updatedCols,
                     };
                 }
+                console.log(row);
                 return row;
             })
         );
@@ -118,8 +127,9 @@ const FormLayout = () => {
         modalFormik.setFieldValue("colIndex", colIndex);
     }
 
-    function postFormSettings(data) {
-        axios.post('http://localhost:4000/layout', data)
+    function editedFormLayout(data, id) {
+        axios.put(`http://localhost:4000/layout/${id}`, data);
+        navigate("/list");
     }
 
     return (
@@ -133,25 +143,14 @@ const FormLayout = () => {
                 Add Row
             </button>
             <form className="form" onSubmit={formik.handleSubmit}>
-                <button className="btn submit" type="submit">
-                    Save
-                </button>
-                <input
-                    type="text"
-                    name="title"
-                    id="title"
-                    placeholder="Enter form title"
-                    value={formik.values.title}
-                    onChange={formik.handleChange}
-                />
-                <input
-                    type="text"
-                    name="desc"
-                    id="desc"
-                    placeholder="Enter form description"
-                    value={formik.values.desc}
-                    onChange={formik.handleChange}
-                />
+                <div className="button">
+                    <button className="btn submit" type="submit">
+                        Save
+                    </button>
+                </div>
+                <div className="title">
+                    <h3>{formik.values.title}</h3>
+                </div>
                 {formik.values.rows &&
                     formik.values.rows.map((row, rowIndex) => (
                         <div className="row" key={row.Index}>
