@@ -9,26 +9,24 @@ const FormLayout = () => {
     const navigate = useNavigate();
     const [modal, setModal] = useState(false);
     const { id } = useParams();
-    // const [ data, setData ] = useState({});
 
     const formik = useFormik({
         initialValues: {},
         onSubmit: (values) => {
             console.log(values);
             editedFormLayout(values, id)
-            // navigate("/form");
         },
     });
 
     async function getFormLayout(id) {
+        console.log("count");
         const form = await axios.get(`http://localhost:4000/layout/?id=${id}`);
-        formik.setValues(form.data.data)
-    } 
-    
+        formik.setValues(form.data.data);
+    }
+
     useEffect(() => {
-        getFormLayout(id)
-    }, [id])
-    
+        getFormLayout(id);
+    }, [id]);
 
     const modalFormik = useFormik({
         initialValues: {
@@ -38,7 +36,6 @@ const FormLayout = () => {
             colIndex: "",
         },
         onSubmit: (values, helpers) => {
-            // console.log(values);
             addAttributes(values, values.rowIndex, values.colIndex);
             helpers.resetForm({ values: "" });
             setModal(false);
@@ -66,7 +63,7 @@ const FormLayout = () => {
                 Index: formik.values.rows.length,
                 cols: [
                     {
-                        Index: `${formik.values.rows.length}0`,
+                        Index: `${formik.values.rows.length}`,
                         value: "",
                         label: "",
                         placeholder: "",
@@ -87,7 +84,7 @@ const FormLayout = () => {
                             cols: [
                                 ...row.cols,
                                 {
-                                    Index: `${rowIndex}${row.cols.length}`,
+                                    Index: `${row.cols.length}`, 
                                     value: "",
                                     label: "",
                                     placeholder: "",
@@ -106,22 +103,23 @@ const FormLayout = () => {
             "rows",
             formik.values.rows.map((row, index) => {
                 if (index === rowIndex) {
-                    const updatedCols = row.cols.filter(
-                        (col) => col.Index !== `${rowIndex}${colIndex}`
-                    );
+                    const updatedCols = [...row.cols];
+                    updatedCols.splice(colIndex, 1);
                     return {
                         ...row,
                         cols: updatedCols,
                     };
                 }
-                console.log(row);
                 return row;
             })
         );
     }
+    
+    
+    
+    
 
     function openModal(rowIndex, colIndex) {
-        // console.log(modalFormik.setFieldValue.rowIndex);
         setModal(true);
         modalFormik.setFieldValue("rowIndex", rowIndex);
         modalFormik.setFieldValue("colIndex", colIndex);
@@ -153,12 +151,12 @@ const FormLayout = () => {
                 </div>
                 {formik.values.rows &&
                     formik.values.rows.map((row, rowIndex) => (
-                        <div className="row" key={row.Index}>
+                        <div className="row" key={row._id}>
                             {row.cols &&
                                 row.cols.map((col, colIndex) => {
                                     return (
                                         <Column
-                                            key={col.Index}
+                                            key={col._id}
                                             col={col}
                                             colIndex={colIndex}
                                             rowIndex={rowIndex}

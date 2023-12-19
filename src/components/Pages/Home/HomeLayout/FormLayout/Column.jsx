@@ -5,6 +5,7 @@ const Column = ({ col, colIndex, rowIndex, deleteColumn, formik, openModal }) =>
     const [{ isOver }, drop] = useDrop(() => ({
         accept: "string",
         drop: (item) => {
+            console.log(rowIndex, colIndex);
             addDropValue(item.type, rowIndex, colIndex);
         },
         collect: (monitor) => ({
@@ -17,6 +18,8 @@ const Column = ({ col, colIndex, rowIndex, deleteColumn, formik, openModal }) =>
         formik.setFieldValue(`rows[${rowIndex}].cols[${colIndex}].value`, type);
         
     }
+    
+    
 
 
     return (
