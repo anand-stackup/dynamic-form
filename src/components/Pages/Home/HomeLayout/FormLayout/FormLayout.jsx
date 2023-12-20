@@ -9,12 +9,13 @@ const FormLayout = () => {
     const navigate = useNavigate();
     const [modal, setModal] = useState(false);
     const { id } = useParams();
+    const [form, setForm] = useState(false)
 
     const formik = useFormik({
         initialValues: {},
         onSubmit: (values) => {
             console.log(values);
-            editedFormLayout(values, id)
+            editedFormLayout(values, id);
         },
     });
 
@@ -26,6 +27,7 @@ const FormLayout = () => {
 
     useEffect(() => {
         getFormLayout(id);
+        setForm(true)
     }, [id]);
 
     const modalFormik = useFormik({
@@ -84,7 +86,7 @@ const FormLayout = () => {
                             cols: [
                                 ...row.cols,
                                 {
-                                    Index: `${row.cols.length}`, 
+                                    Index: `${row.cols.length}`,
                                     value: "",
                                     label: "",
                                     placeholder: "",
@@ -114,10 +116,6 @@ const FormLayout = () => {
             })
         );
     }
-    
-    
-    
-    
 
     function openModal(rowIndex, colIndex) {
         setModal(true);
@@ -132,55 +130,58 @@ const FormLayout = () => {
 
     return (
         <div className="form-layout">
+            <div className="title">
+                <h3>{formik.values.title}</h3>
+            </div>
             <button
                 className="btn add-row"
                 onClick={() => {
                     addRow();
+                    setForm(true)
                 }}
             >
                 Add Row
             </button>
-            <form className="form" onSubmit={formik.handleSubmit}>
+            {form ? <form className="form" onSubmit={formik.handleSubmit}>
+                <div>
+                    {formik.values.rows &&
+                        formik.values.rows.map((row, rowIndex) => (
+                            <div className="row" key={row._id}>
+                                {row.cols &&
+                                    row.cols.map((col, colIndex) => {
+                                        return (
+                                            <Column
+                                                key={col._id}
+                                                col={col}
+                                                colIndex={colIndex}
+                                                rowIndex={rowIndex}
+                                                deleteColumn={deleteColumn}
+                                                formik={formik}
+                                                openModal={openModal}
+                                            />
+                                        );
+                                    })}
+
+                                {row.cols.length < 3 ? (
+                                    <button
+                                        type="button"
+                                        className="btn add-col"
+                                        onClick={() => addColumn(rowIndex)}
+                                    >
+                                        Add Column
+                                    </button>
+                                ) : (
+                                    ""
+                                )}
+                            </div>
+                        ))}
+                </div>
                 <div className="button">
                     <button className="btn submit" type="submit">
                         Save
                     </button>
                 </div>
-                <div className="title">
-                    <h3>{formik.values.title}</h3>
-                </div>
-                {formik.values.rows &&
-                    formik.values.rows.map((row, rowIndex) => (
-                        <div className="row" key={row._id}>
-                            {row.cols &&
-                                row.cols.map((col, colIndex) => {
-                                    return (
-                                        <Column
-                                            key={col._id}
-                                            col={col}
-                                            colIndex={colIndex}
-                                            rowIndex={rowIndex}
-                                            deleteColumn={deleteColumn}
-                                            formik={formik}
-                                            openModal={openModal}
-                                        />
-                                    );
-                                })}
-
-                            {row.cols.length < 3 ? (
-                                <button
-                                    type="button"
-                                    className="btn add-col"
-                                    onClick={() => addColumn(rowIndex)}
-                                >
-                                    Add Column
-                                </button>
-                            ) : (
-                                ""
-                            )}
-                        </div>
-                    ))}
-            </form>
+            </form> : ''}
 
             {modal ? (
                 <div className="modal">
