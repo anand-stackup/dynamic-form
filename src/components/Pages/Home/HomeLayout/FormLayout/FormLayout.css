@@ -6,34 +6,46 @@
     width: 80%;
     padding: 15px;
     position: relative;
+    gap: 10px;
 }
 
 .form {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    border:  1px solid rgb(0, 132, 255);
+    /* border:  1px solid rgb(0, 132, 255); */
     width: 90%;
     height: 500px;
     justify-content: space-between;
-    padding: 10px;
+    padding: 20px;
+    background-color: #a9d7f6;
+    border-radius: 20px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
 }
 
 .row {
     display: flex;
     align-items: center;
-    border: 1px dashed gray;
+    /* border: 1px dashed gray; */
     display: flex;
-    gap: 10px;
+    gap: 20px;
     padding: 10px;
     margin-bottom: 8px;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 }
 
 .col {
     display: flex;
+    flex-direction: column;
     gap: 10px;
-    border: 1px dashed blue;
+    /* border: 1px dashed blue; */
     padding: 10px;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+    /* background-color: #f96d6d; */
+    
 }
 
 .btn {
@@ -45,6 +57,7 @@
 .add-row {
     width: 100px;
     margin-bottom: 10px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
 }
 
 .delete-col, .attribute {
@@ -88,4 +101,13 @@
 .button {
     display: flex;
     justify-content: center;
+}
+
+.col-title {
+    display: flex;
+    justify-content: space-between;
+}
+
+.col-title button {
+    margin-right: 5px;
 }
