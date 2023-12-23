@@ -124,6 +124,7 @@ const FormLayout = () => {
         modalFormik.setFieldValue("rowIndex", rowIndex);
         modalFormik.setFieldValue("colIndex", colIndex);
     }
+    // console.log(modal);
 
     function editedFormLayout(data, id) {
         axios.put(`http://localhost:4000/layout/${id}`, data);
@@ -165,7 +166,7 @@ const FormLayout = () => {
                     <div>
                         {formik.values.rows &&
                             formik.values.rows.map((row, rowIndex) => {
-                                console.log(row);
+                                // console.log(row);
 
                                 return (
                                     <Row 
@@ -178,38 +179,6 @@ const FormLayout = () => {
                                         addColumn={addColumn}
                                         moveItem={moveItem}
                                     />
-                                    // <div className="row" key={row._id}>
-                                    //     {row.cols &&
-                                    //         row.cols.map((col, colIndex) => {
-                                    //             return (
-                                    //                 <Column
-                                    //                     key={col._id}
-                                    //                     col={col}
-                                    //                     colIndex={colIndex}
-                                    //                     rowIndex={rowIndex}
-                                    //                     deleteColumn={
-                                    //                         deleteColumn
-                                    //                     }
-                                    //                     formik={formik}
-                                    //                     openModal={openModal}
-                                    //                 />
-                                    //             );
-                                    //         })}
-
-                                    //     {row.cols.length < 3 ? (
-                                    //         <button
-                                    //             type="button"
-                                    //             className="btn add-col"
-                                    //             onClick={() =>
-                                    //                 addColumn(rowIndex)
-                                    //             }
-                                    //         >
-                                    //             Add Column
-                                    //         </button>
-                                    //     ) : (
-                                    //         ""
-                                    //     )}
-                                    // </div>
                                 );
                             })}
                     </div>

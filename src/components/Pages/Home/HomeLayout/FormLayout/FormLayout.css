@@ -14,8 +14,8 @@
     flex-direction: column;
     gap: 10px;
     /* border:  1px solid rgb(0, 132, 255); */
-    width: 90%;
-    height: 500px;
+    width: 80%;
+    min-height: 500px;
     justify-content: space-between;
     padding: 20px;
     background-color: #a9d7f6;
@@ -26,14 +26,27 @@
 .row {
     display: flex;
     align-items: center;
+    justify-content: space-around;
     /* border: 1px dashed gray; */
     display: flex;
     gap: 20px;
-    padding: 10px;
-    margin-bottom: 8px;
+    padding: 12px;
+    margin-bottom: 10px;
     border-radius: 10px;
     background-color: #fff;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+}
+
+.grip {
+    font-size: 18px;
+    background-color: #219ebc;
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff
 }
 
 .col {
